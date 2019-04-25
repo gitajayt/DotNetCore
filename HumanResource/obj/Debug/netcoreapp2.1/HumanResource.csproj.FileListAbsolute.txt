@@ -1,0 +1,14 @@
+D:\Demo\HumanResource\HumanResource\bin\Debug\netcoreapp2.1\HumanResource.deps.json
+D:\Demo\HumanResource\HumanResource\bin\Debug\netcoreapp2.1\HumanResource.runtimeconfig.json
+D:\Demo\HumanResource\HumanResource\bin\Debug\netcoreapp2.1\HumanResource.runtimeconfig.dev.json
+D:\Demo\HumanResource\HumanResource\bin\Debug\netcoreapp2.1\HumanResource.dll
+D:\Demo\HumanResource\HumanResource\obj\Debug\netcoreapp2.1\HumanResource.csprojAssemblyReference.cache
+D:\Demo\HumanResource\HumanResource\obj\Debug\netcoreapp2.1\HumanResource.csproj.CoreCompileInputs.cache
+D:\Demo\HumanResource\HumanResource\obj\Debug\netcoreapp2.1\HumanResource.RazorAssemblyInfo.cache
+D:\Demo\HumanResource\HumanResource\obj\Debug\netcoreapp2.1\HumanResource.RazorAssemblyInfo.cs
+D:\Demo\HumanResource\HumanResource\obj\Debug\netcoreapp2.1\HumanResource.AssemblyInfoInputs.cache
+D:\Demo\HumanResource\HumanResource\obj\Debug\netcoreapp2.1\HumanResource.AssemblyInfo.cs
+D:\Demo\HumanResource\HumanResource\obj\Debug\netcoreapp2.1\HumanResource.RazorTargetAssemblyInfo.cache
+D:\Demo\HumanResource\HumanResource\bin\Debug\netcoreapp2.1\HumanResource.pdb
+D:\Demo\HumanResource\HumanResource\obj\Debug\netcoreapp2.1\HumanResource.dll
+D:\Demo\HumanResource\HumanResource\obj\Debug\netcoreapp2.1\HumanResource.pdb
