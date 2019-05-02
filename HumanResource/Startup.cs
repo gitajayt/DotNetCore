@@ -45,6 +45,7 @@ namespace HumanResource
                 });
             services.AddCors();
             services.AddAutoMapper();
+            services.Configure<CloudanarySettings>(Configuration.GetSection("CloudanarySettings"));
             services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDatingRepository, DatingRepository>();
