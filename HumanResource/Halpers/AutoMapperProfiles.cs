@@ -33,6 +33,8 @@ namespace HumanResource.Halpers
                   opt.ResolveUsing(d => d.DateOfBirth.CalculateAge());
               });
             CreateMap<Photo, PhotosForDetailedDto>();
+
+            CreateMap<UserForUpdateDto, User>();
         }
     }
 }
