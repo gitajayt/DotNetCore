@@ -102,5 +102,74 @@ namespace HumanResource.Controllers
             return BadRequest("Could not add the photo");
         }
 
+        [HttpPost("{id}/setMain")]
+        public async Task<IActionResult> SetMainPhoto(int userId, int id)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var user = await _repo.GetUser(userId);
+
+            if (!user.Photos.Any(p => p.Id == id))
+                 return Unauthorized();
+
+            var photFromRepo = await _repo.GetPhoto(id);
+
+            if (photFromRepo.IsMain)
+                return BadRequest("This is already the main photo");
+
+            var currentMainPhoto = await _repo.GetMainPhotoForUser(userId);
+
+            currentMainPhoto.IsMain = false;
+
+            photFromRepo.IsMain = true;
+
+            if (await _repo.SaveAll())
+                return NoContent();
+
+            return BadRequest("Could not set photo to main");
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePhoto(int userId, int id)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var user = await _repo.GetUser(userId);
+
+            if (!user.Photos.Any(p => p.Id == id))
+                return Unauthorized();
+
+            var photFromRepo = await _repo.GetPhoto(id);
+
+            if (photFromRepo.IsMain)
+                return BadRequest("You cannot delete your main photo");
+
+            if(photFromRepo.PublicId != null)
+            {
+                var deleteParams = new DeletionParams(photFromRepo.PublicId);
+
+                var result = _cloudanary.Destroy(deleteParams);
+
+                if(result.Result == "ok")
+                {
+                    _repo.Delete(photFromRepo);
+                }
+            }
+
+            if(photFromRepo.PublicId == null)
+            {
+                _repo.Delete(photFromRepo);
+            }
+
+            if (await _repo.SaveAll())
+                return Ok();
+
+            return BadRequest("Failed to delete the photo");
+
+        }
+
     }
 }
