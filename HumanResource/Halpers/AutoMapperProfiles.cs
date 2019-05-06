@@ -39,6 +39,7 @@ namespace HumanResource.Halpers
             CreateMap<Photo, PhotoForReturnDto>();
 
             CreateMap<PhotoForCreationDto, Photo>();
+            CreateMap<UserForRegisterDto, User>();
         }
     }
 }

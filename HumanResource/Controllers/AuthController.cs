@@ -39,14 +39,10 @@ namespace HumanResource.Controllers
             if (await _repo.UserExists(userForRegisterDto.Username))
                 return BadRequest("User already exists");
 
-            var usertocreate = new User
-            {
-                UserName = userForRegisterDto.Username
-            };
-
+            var usertocreate = _mapper.Map<User>(userForRegisterDto);
             var createdUser = await _repo.Register(usertocreate, userForRegisterDto.password);
-
-            return StatusCode(201);
+            var userToReturn = Mapper.Map<UserForDetailedDto>(createdUser);
+            return CreatedAtRoute("GetUser", new { Controller = "Users", id = createdUser.Id }, userToReturn);
         }
 
         [HttpPost("login")]
