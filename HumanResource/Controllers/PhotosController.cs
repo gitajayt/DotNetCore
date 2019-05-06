@@ -43,7 +43,7 @@ namespace HumanResource.Controllers
             _cloudanary = new Cloudinary(acc);
         }
 
-        [HttpGet("{id}", Name ="GetPhoto")]
+        [HttpGet("{id}", Name = "GetPhoto")]
         public async Task<IActionResult> GetPhoto(int id)
         {
             var photoFromRepo = await _repo.GetPhoto(id);
@@ -55,7 +55,7 @@ namespace HumanResource.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPhotoForUser(int userId, 
+        public async Task<IActionResult> AddPhotoForUser(int userId,
             [FromForm]PhotoForCreationDto photoForCreationDto)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
@@ -67,7 +67,7 @@ namespace HumanResource.Controllers
 
             var uploadresult = new ImageUploadResult();
 
-            if(file.Length > 0)
+            if (file.Length > 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
@@ -93,7 +93,7 @@ namespace HumanResource.Controllers
 
             userFromRepo.Photos.Add(photo);
 
-            if(await _repo.SaveAll())
+            if (await _repo.SaveAll())
             {
                 var photoToReturn = _mapper.Map<PhotoForReturnDto>(photo);
                 return CreatedAtRoute("GetPhoto", new { id = photo.Id }, photoToReturn);
@@ -111,7 +111,7 @@ namespace HumanResource.Controllers
             var user = await _repo.GetUser(userId);
 
             if (!user.Photos.Any(p => p.Id == id))
-                 return Unauthorized();
+                return Unauthorized();
 
             var photFromRepo = await _repo.GetPhoto(id);
 
@@ -147,19 +147,19 @@ namespace HumanResource.Controllers
             if (photFromRepo.IsMain)
                 return BadRequest("You cannot delete your main photo");
 
-            if(photFromRepo.PublicId != null)
+            if (photFromRepo.PublicId != null)
             {
                 var deleteParams = new DeletionParams(photFromRepo.PublicId);
 
                 var result = _cloudanary.Destroy(deleteParams);
 
-                if(result.Result == "ok")
+                if (result.Result == "ok")
                 {
                     _repo.Delete(photFromRepo);
                 }
             }
 
-            if(photFromRepo.PublicId == null)
+            if (photFromRepo.PublicId == null)
             {
                 _repo.Delete(photFromRepo);
             }

@@ -41,9 +41,9 @@ namespace HumanResource.Data
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
-                
+
                 var computedhash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                for(int i = 0;i<computedhash.Length;i++)
+                for (int i = 0; i < computedhash.Length; i++)
                 {
                     if (computedhash[i] != passwordHash[i]) return false;
                 }

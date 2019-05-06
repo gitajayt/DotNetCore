@@ -29,11 +29,15 @@ namespace HumanResource.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers([FromQuery]UserParams userParams)
         {
-            var users = await _repository.GetUsers();
+            var users = await _repository.GetUsers(userParams);
 
             var usersToReturn = _mapper.Map<IEnumerable<UserForListDto>>(users);
+
+            Response.AddPagination(users.CurrentPage, users.PageSize, 
+                users.TotalCount, users.TotalPages);
+
 
             return Ok(usersToReturn);
         }
@@ -52,7 +56,7 @@ namespace HumanResource.Controllers
         public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto)
         {
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-              return Unauthorized();
+                return Unauthorized();
 
             var userFromRepo = await _repository.GetUser(id);
 
