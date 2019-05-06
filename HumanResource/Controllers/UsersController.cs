@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HumanResource.Data;
 using HumanResource.DTOS;
+using HumanResource.Halpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HumanResource.Controllers
 {
+    [ServiceFilter(typeof(LogUserActivity))]
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
