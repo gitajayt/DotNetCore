@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HumanResource.Models
 {
+   
     public class Photo
     {
         public int Id { get; set; }

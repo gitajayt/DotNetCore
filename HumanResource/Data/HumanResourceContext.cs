@@ -21,6 +21,7 @@ namespace HumanResource.Data
         public DbSet<Values> Values { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<Like> Likes { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
@@ -32,20 +33,23 @@ namespace HumanResource.Data
         //    }
         //}
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Blog>(entity =>
-        //    {
-        //        entity.Property(e => e.Url).IsRequired();
-        //    });
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Like>()
+                .HasKey(k => new { k.LikerId, k.LikeeId });
 
-        //    modelBuilder.Entity<Post>(entity =>
-        //    {
-        //        entity.HasOne(d => d.Blog)
-        //            .WithMany(p => p.Post)
-        //            .HasForeignKey(d => d.BlogId);
-        //    });
-        //}
+            modelBuilder.Entity<Like>()
+                .HasOne(u => u.Likee)
+                .WithMany(u => u.Likers)
+                .HasForeignKey(u => u.LikeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Like>()
+                .HasOne(u => u.Liker)
+                .WithMany(u => u.Likees)
+                .HasForeignKey(u => u.LikerId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }
 

@@ -7,6 +7,7 @@ using AutoMapper;
 using HumanResource.Data;
 using HumanResource.DTOS;
 using HumanResource.Halpers;
+using HumanResource.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,7 @@ namespace HumanResource.Controllers
 
             userParams.UserId = currentUserId;
 
-            if(string.IsNullOrEmpty(userParams.Gender))
+            if (string.IsNullOrEmpty(userParams.Gender))
             {
                 userParams.Gender = userFromRepo.Gender == "male" ? "female" : "male";
             }
@@ -46,7 +47,7 @@ namespace HumanResource.Controllers
 
             var usersToReturn = _mapper.Map<IEnumerable<UserForListDto>>(users);
 
-            Response.AddPagination(users.CurrentPage, users.PageSize, 
+            Response.AddPagination(users.CurrentPage, users.PageSize,
                 users.TotalCount, users.TotalPages);
 
 
@@ -77,6 +78,36 @@ namespace HumanResource.Controllers
                 return NoContent();
 
             throw new Exception($"Updating user {id} failed on save");
+        }
+
+        [HttpPost("{id}/like/{recipientId}")]
+        public async Task<IActionResult> LikeUser(int id, int recipientId)
+        {
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var like = await _repository.GetLike(id, recipientId);
+
+            if (like != null)
+                return BadRequest("You already liked this user");
+
+            if (await _repository.GetUser(recipientId) == null)
+                return NotFound();
+
+             like = new Like
+            {
+                LikerId = id,
+                LikeeId = recipientId
+
+            };
+
+            _repository.Add<Like>(like);
+
+            if (await _repository.SaveAll())
+                return Ok();
+
+            return BadRequest("Failed to like user");
+
         }
     }
 }
