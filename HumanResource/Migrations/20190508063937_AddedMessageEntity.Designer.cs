@@ -4,14 +4,16 @@ using HumanResource.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HumanResource.Migrations
 {
     [DbContext(typeof(HumanResourceContext))]
-    partial class HumanResourceContextModelSnapshot : ModelSnapshot
+    [Migration("20190508063937_AddedMessageEntity")]
+    partial class AddedMessageEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
